@@ -1,0 +1,82 @@
+server:
+  port: 8088
+
+---
+
+spring:
+  profiles: default
+  cloud:
+    gateway:
+      routes:
+        - id: checkIn
+          uri: http://localhost:8081
+          predicates:
+            - Path=/checkIns/** 
+        - id: point
+          uri: http://localhost:8082
+          predicates:
+            - Path=/deducts/**/,earns/**
+        - id: pay
+          uri: http://localhost:8083
+          predicates:
+            - Path=/pays/** 
+        - id: customercenter
+          uri: http://localhost:8084
+          predicates:
+            - Path= /mypages/**
+        - id: wellbing
+          uri: http://localhost:8085
+          predicates:
+            - Path=/eats/** 
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+
+---
+
+spring:
+  profiles: docker
+  cloud:
+    gateway:
+      routes:
+        - id: checkIn
+          uri: http://checkIn:8080
+          predicates:
+            - Path=/checkIns/** 
+        - id: point
+          uri: http://point:8080
+          predicates:
+            - Path=/deducts/**/,earns/**
+        - id: pay
+          uri: http://pay:8080
+          predicates:
+            - Path=/pays/** 
+        - id: customercenter
+          uri: http://customercenter:8080
+          predicates:
+            - Path= /mypages/**
+        - id: wellbing
+          uri: http://wellbing:8080
+          predicates:
+            - Path=/eats/** 
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+server:
+  port: 8080
